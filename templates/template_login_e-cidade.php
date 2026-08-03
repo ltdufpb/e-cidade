@@ -180,7 +180,7 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
     }
   });
 
-  function js_acessar_jquery() {
+  function js_acessar_dbportal() {
 
       btnLogar.style.display = 'none';
       btnLoading.style.display = '';
@@ -252,6 +252,17 @@ $clientSecret = Registry::get('app.config')->get('api.client.secret');
 
       return HttpClient.post('login.rpc.php', {body: formData, reportProgress: false});
     }
+
+  function js_acessar_jquery() {
+    var sLogin = $('#usu_login').val();
+    var sSenha = calcMD5($('#usu_senha').val());
+    var wname  = 'wname' + Math.floor(Math.random() * 10000);
+    $('#usu_senha').val('');
+    $('#usu_login').val('');
+    var sAuth = btoa("DB_login=" + sLogin + "&DB_senha=" + sSenha).urlEncode();
+    var sUrl  = 'abrir.php?sAuth=' + sAuth;
+    window.open(sUrl, wname, 'width=' + screen.availWidth + ',height=' + screen.availHeight);
+  }
   }
 
   $(document).ready(function() {
